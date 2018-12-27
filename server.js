@@ -42,7 +42,7 @@ app.prepare().then(() => {
     return handle(req, res);
   });
 
-  cron.schedule('5 * * * *', async () => {
+  cron.schedule('*/5 * * * *', async () => {
     const pilaitesTop = await getPilaitesAdds();
     const naujamiescioTop = await getNaujamiestisAdds();
     if (pilaitesTop[0].img !== pilaitesTopAdd) {
