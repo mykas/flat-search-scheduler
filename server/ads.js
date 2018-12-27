@@ -9,7 +9,7 @@ const parseRow = html => {
   });
   const address = $('.list-adress a').html() || '';
   const price = $('.list-adress .price .list-item-price').html() || '';
-  const img = $('.list-img .list-photo a img').attr('src') || '';
+  const href = $('.list-img .list-photo a').attr('href') || '';
   const rooms =
     $('.list-RoomNum')
       .text()
@@ -17,7 +17,7 @@ const parseRow = html => {
   return {
     address: address === '' ? '' : address.replace('<br>', ', '),
     price: price,
-    img: img,
+    href: 'https://www.aruodas.lt' + href,
     rooms: rooms,
   };
 };

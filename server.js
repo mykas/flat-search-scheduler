@@ -42,21 +42,21 @@ app.prepare().then(() => {
     return handle(req, res);
   });
 
-  cron.schedule('*/5 * * * *', async () => {
+  cron.schedule('*/2 * * * *', async () => {
     const pilaitesTop = await getPilaitesAdds();
     const naujamiescioTop = await getNaujamiestisAdds();
-    if (pilaitesTop[0].img !== pilaitesTopAdd) {
+    if (pilaitesTop[0].href !== pilaitesTopAdd) {
       send({
         text: JSON.stringify(pilaitesTop),
       });
-      pilaitesTopAdd = pilaitesTop[0].img;
+      pilaitesTopAdd = pilaitesTop[0].href;
     }
-    if (naujamiescioTop[0].img !== naujamiescioTopAdd) {
+    if (naujamiescioTop[0].href !== naujamiescioTopAdd) {
       send({
         subject: 'Naujamiescio top pokyciai',
         text: JSON.stringify(naujamiescioTop),
       });
-      naujamiescioTopAdd = naujamiescioTop[0].img;
+      naujamiescioTopAdd = naujamiescioTop[0].href;
     }
     console.log('Fetched');
   });
