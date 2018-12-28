@@ -33,6 +33,8 @@ const entrypoints = {
   pilaites: 'https://aruodas-img.dgn.lt/object_63_65103229/nuotrauka.jpg',
   naujamiescio: 'https://aruodas-img.dgn.lt/object_63_65103229/nuotrauka.jpg',
   snipiskese: 'https://aruodas-img.dgn.lt/object_63_65103229/nuotrauka.jpg',
+  siauresMiestelis:
+    'https://aruodas-img.dgn.lt/object_63_65103229/nuotrauka.jpg',
 };
 
 const validateSend = (list, type) => {
@@ -57,9 +59,11 @@ app.prepare().then(() => {
     const pilaites = await getTop('pilaiteje');
     const naujamiescio = await getTop('naujamiestyje');
     const snipiskes = await getTop('snipiskese');
+    const siauresMiestelis = await getTop('siaures-miestelyje');
     await validateSend(pilaites, 'pilaiteje');
     await validateSend(naujamiescio, 'naujamiestyje');
     await validateSend(snipiskes, 'snipiskese');
+    await validateSend(siauresMiestelis, 'siauresMiestelis');
     console.log('Fetched');
   });
 
