@@ -1,7 +1,7 @@
 const express = require('express');
 const next = require('next');
 const cron = require('node-cron');
-const { getPilaitesAdds, getNaujamiestisAdds } = require('./server/ads');
+const { getTop } = require('./server/ads');
 
 const tls = require('tls');
 
@@ -29,10 +29,21 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-let pilaitesTopAdd =
-  'https://aruodas-img.dgn.lt/object_63_65103229/nuotrauka.jpg';
-let naujamiescioTopAdd =
-  'https://aruodas-img.dgn.lt/object_63_65103229/nuotrauka.jpg';
+const entrypoints = {
+  pilaites: 'https://aruodas-img.dgn.lt/object_63_65103229/nuotrauka.jpg',
+  naujamiescio: 'https://aruodas-img.dgn.lt/object_63_65103229/nuotrauka.jpg',
+  snipiskese: 'https://aruodas-img.dgn.lt/object_63_65103229/nuotrauka.jpg',
+};
+
+const validateSend = (list, type) => {
+  if (list[0].href !== entrypoints[type]) {
+    send({
+      subject: type + ' ' + 'pokytis',
+      text: JSON.stringify(list),
+    });
+    entrypoints[type] = list[0].href;
+  }
+};
 
 app.prepare().then(() => {
   const server = express();
@@ -43,21 +54,12 @@ app.prepare().then(() => {
   });
 
   cron.schedule('*/2 * * * *', async () => {
-    const pilaitesTop = await getPilaitesAdds();
-    const naujamiescioTop = await getNaujamiestisAdds();
-    if (pilaitesTop[0].href !== pilaitesTopAdd) {
-      send({
-        text: JSON.stringify(pilaitesTop),
-      });
-      pilaitesTopAdd = pilaitesTop[0].href;
-    }
-    if (naujamiescioTop[0].href !== naujamiescioTopAdd) {
-      send({
-        subject: 'Naujamiescio top pokyciai',
-        text: JSON.stringify(naujamiescioTop),
-      });
-      naujamiescioTopAdd = naujamiescioTop[0].href;
-    }
+    const pilaites = await getTop('pilaiteje');
+    const naujamiescio = await getTop('naujamiestyje');
+    const snipiskes = await getTop('snipiskese');
+    await validateSend(pilaites, 'pilaiteje');
+    await validateSend(naujamiescio, 'naujamiestyje');
+    await validateSend(snipiskes, 'snipiskese');
     console.log('Fetched');
   });
 

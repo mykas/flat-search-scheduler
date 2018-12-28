@@ -22,24 +22,10 @@ const parseRow = html => {
   };
 };
 
-const getPilaitesAdds = async () => {
+const getTop = async rajonas => {
   let list = [];
   const response = await axios.get(
-    `${baseURL}/pilaiteje/?FAreaOverAllMin=40&FAreaOverAllMax=70&FRoomNumMin=2&FRoomNumMax=2&FPriceMin=350&FPriceMax=550&FOrder=AddDate`
-  );
-  const $ = cheerio.load(response.data);
-  $('.list-search .list-row').each((i, elm) => {
-    $('.list-adress', elm).hasClass('list-adress') //eslint-disable-line
-      ? list.push(parseRow(elm))
-      : undefined;
-  });
-  return list;
-};
-
-const getNaujamiestisAdds = async () => {
-  let list = [];
-  const response = await axios.get(
-    `${baseURL}/naujamiestyje/?FAreaOverAllMin=40&FAreaOverAllMax=70&FRoomNumMin=2&FRoomNumMax=2&FPriceMin=350&FPriceMax=550&FOrder=AddDate`
+    `${baseURL}/${rajonas}/?FAreaOverAllMin=40&FAreaOverAllMax=70&FRoomNumMin=2&FRoomNumMax=2&FPriceMin=350&FPriceMax=550&FOrder=AddDate`
   );
   const $ = cheerio.load(response.data);
   $('.list-search .list-row').each((i, elm) => {
@@ -51,6 +37,5 @@ const getNaujamiestisAdds = async () => {
 };
 
 module.exports = {
-  getPilaitesAdds,
-  getNaujamiestisAdds,
+  getTop,
 };
