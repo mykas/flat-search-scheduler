@@ -1,7 +1,5 @@
-const express = require('express');
-const next = require('next');
 const cron = require('node-cron');
-const { getTop } = require('./server/ads');
+const { getTop } = require('./ads');
 
 const tls = require('tls');
 
@@ -24,12 +22,7 @@ var send = require('gmail-send')({
 });
 tls.DEFAULT_ECDH_CURVE = 'auto';
 
-const port = parseInt(process.env.PORT, 10) || 3000;
-const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
-const handle = app.getRequestHandler();
-
-const entrypoints = {
+let entrypoints = {
   pilaites: 'https://aruodas-img.dgn.lt/object_63_65103229/nuotrauka.jpg',
   naujamiescio: 'https://aruodas-img.dgn.lt/object_63_65103229/nuotrauka.jpg',
   snipiskese: 'https://aruodas-img.dgn.lt/object_63_65103229/nuotrauka.jpg',
@@ -47,28 +40,15 @@ const validateSend = (list, type) => {
   }
 };
 
-app.prepare().then(() => {
-  const server = express();
-
-  // Set up home page as a simple render of the page.
-  server.get('*', (req, res) => {
-    return handle(req, res);
-  });
-
-  cron.schedule('*/2 * * * *', async () => {
-    const pilaites = await getTop('pilaiteje');
-    const naujamiescio = await getTop('naujamiestyje');
-    const snipiskes = await getTop('snipiskese');
-    const siauresMiestelis = await getTop('siaures-miestelyje');
-    await validateSend(pilaites, 'pilaiteje');
-    await validateSend(naujamiescio, 'naujamiestyje');
-    await validateSend(snipiskes, 'snipiskese');
-    await validateSend(siauresMiestelis, 'siauresMiestelis');
-    console.log('Fetched');
-  });
-
-  server.listen(port, err => {
-    if (err) throw err;
-    console.log(`> Ready on http://localhost:${port}`);
-  });
+cron.schedule('*/2 * * * *', async () => {
+  const pilaites = await getTop('pilaiteje');
+  const naujamiescio = await getTop('naujamiestyje');
+  const snipiskes = await getTop('snipiskese');
+  const siauresMiestelis = await getTop('siaures-miestelyje');
+  await validateSend(pilaites, 'pilaiteje');
+  await validateSend(naujamiescio, 'naujamiestyje');
+  await validateSend(snipiskes, 'snipiskese');
+  await validateSend(siauresMiestelis, 'siauresMiestelis');
+  console.log(entrypoints);
+  console.log('Fetched');
 });

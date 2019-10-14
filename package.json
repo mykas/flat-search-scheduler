@@ -8,9 +8,7 @@
     "email": "mykolass@wix.com"
   },
   "scripts": {
-    "start": "next build && NODE_ENV=dev node server.js",
-    "build": "next build",
-    "dev": "NODE_ENV=development node server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "axios": "~0.16.0",
@@ -19,17 +17,7 @@
     "express": "~4.15.0",
     "gmail-send": "^1.2.14",
     "https": "^1.0.0",
-    "next": "^7.0.2",
     "node-cron": "^2.0.3",
-    "prop-types": "~15.6.0",
-    "react": "^16.5.1",
-    "react-dom": "^16.5.1",
     "sendmail": "^1.4.1"
-  },
-  "devDependencies": {
-    "babel-plugin-styled-components": "^1.10.0",
-    "nock": "^9.4.2",
-    "puppeteer": "^1.5.0",
-    "styled-components": "^4.1.3"
   }
 }
