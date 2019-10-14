@@ -7,7 +7,7 @@ var send = require('gmail-send')({
   //var send = require('../index.js')({
   user: 'mykolas.sindeikis@gmail.com',
   // user: credentials.user,                  // Your GMail account used to send emails
-  pass: 'kyoxmmzjoxrfqazi',
+  pass: 'special-password',
   // pass: credentials.pass,                  // Application-specific password
   to: 'mykolas.sindeikis@gmail.com',
   // to:   credentials.user,                  // Send to yourself
